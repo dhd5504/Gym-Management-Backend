@@ -23,6 +23,7 @@ public class UserController {
 
     @PostMapping("/register")
     public void registerUser(@RequestBody User user) {
+        user.setRole("member");
         userService.saveUser(user);
     }
 
@@ -33,13 +34,11 @@ public class UserController {
 
 
         User existingUser = userService.findByUsername(username);
-        if (existingUser == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Invalid username"));
+        if (existingUser == null || !existingUser.getPassword().equals(password)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Collections.singletonMap("error", "Invalid username or password"));
         }
 
-        if (!existingUser.getPassword().equals(password)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "Invalid password"));
-        }
 
 
         Map<String, Object> response = new HashMap<>();
