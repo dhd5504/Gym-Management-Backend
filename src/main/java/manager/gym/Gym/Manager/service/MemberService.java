@@ -2,6 +2,7 @@ package manager.gym.Gym.Manager.service;
 
 
 import manager.gym.Gym.Manager.entity.Member;
+import manager.gym.Gym.Manager.entity.User;
 import manager.gym.Gym.Manager.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,11 @@ public class MemberService {
     }
 
     public Member createMember(Member member) {
+        User user = member.getUser();
+        if (user != null) {
+            // Gán role mặc định
+            user.setRole("member");
+        }
         return memberRepository.save(member);
     }
 
