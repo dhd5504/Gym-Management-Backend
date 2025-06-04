@@ -25,6 +25,17 @@ public class Member {
     private String job;
     private String memberType;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     @OneToMany(mappedBy = "memberId", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<TrainingHistory> trainingHistories;

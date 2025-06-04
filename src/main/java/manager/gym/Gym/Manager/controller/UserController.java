@@ -22,9 +22,14 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void registerUser(@RequestBody User user) {
-        user.setRole("member");
-        userService.saveUser(user);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        try {
+            user.setRole("member");
+            userService.saveUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registration failed");
+        }
     }
 
     @PostMapping("/login")
